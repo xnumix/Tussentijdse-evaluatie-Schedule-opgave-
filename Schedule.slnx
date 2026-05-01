@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="Schedule.Domain/Schedule.Domain.csproj" />
+  <Project Path="Schedule.Persistance/Schedule.Persistance.csproj" />
+  <Project Path="Schedule.Presentation/Schedule.Presentation.csproj" />
+  <Project Path="Schedule.StartUp/Schedule.StartUp.csproj" />
+</Solution>
