@@ -13,20 +13,15 @@ namespace Schedule.Domain
             _repository = repository;
         }
 
+        public void CreateNewLesson(string name, TimeOnly starttime, int studentCount)
+        {
+            _repository.StoreActivity();
+        }
 
-
-        public Lesson CreateNewLesson() 
+        public Lesson CreateNewLesson(string? name) 
         {
             List<Lesson> Lessons = [];
 
-            Console.WriteLine("Give the name of the lesson:");
-            string name = Console.ReadLine();
-
-            Console.WriteLine("Give the start-time of lesson:");
-            TimeOnly starttime= TimeOnly.Parse( Console.ReadLine());
-
-            Console.WriteLine("Give the ammount of students:");
-            int studentCount = int.Parse(Console.ReadLine());
 
             Lesson lesson = new(starttime,name,studentCount);
             Lessons.Add(lesson);
@@ -39,7 +34,6 @@ namespace Schedule.Domain
 
         public Excursion CreateNewExcursion()
         {
-            //int travelTime, TimeOnly startTime, string name, int studentCount
 
             List<Excursion> Excursions = [];
 
@@ -80,8 +74,6 @@ namespace Schedule.Domain
             return pauze;
         }
 
-
-
-
+        
     }
 }

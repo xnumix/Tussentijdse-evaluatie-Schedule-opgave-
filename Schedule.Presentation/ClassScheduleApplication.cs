@@ -41,7 +41,18 @@ namespace Schedule.Presentation
 
         private void AddLesson()
         {
-            _domainManager.CreateNewLesson();
+
+            Console.WriteLine("Give the name of the lesson:");
+            string name = Console.ReadLine();
+
+            Console.WriteLine("Give the start-time of lesson:");
+            TimeOnly starttime = TimeOnly.Parse(Console.ReadLine());
+
+            Console.WriteLine("Give the ammount of students:");
+            int studentCount = int.Parse(Console.ReadLine());
+
+            _domainManager.CreateNewLesson(name, starttime, studentCount);
+            Console.WriteLine("Added.");
         }
 
         private void AddBreak()

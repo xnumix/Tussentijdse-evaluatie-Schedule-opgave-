@@ -9,7 +9,6 @@ public class Lesson : IPlannableActivity
 
     public Lesson(TimeOnly startTime, string name, int studentCount)
     {
-        StartTime = startTime;
         Name = name;
         StudentCount = studentCount;
     }
@@ -37,11 +36,6 @@ public class Lesson : IPlannableActivity
         }
     }
 
-    public TimeOnly StartTime
-    {
-        get;
-    }
-
     public TimeOnly EndTime
     {
         get;
@@ -54,6 +48,7 @@ public class Lesson : IPlannableActivity
         }
     }
 
+    public TimeOnly StartTime => throw new NotImplementedException();
 
     public int CompareTo(IPlannableActivity? other)
     {
