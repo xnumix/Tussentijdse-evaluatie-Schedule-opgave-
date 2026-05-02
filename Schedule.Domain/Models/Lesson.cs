@@ -4,7 +4,9 @@ namespace Schedule.Domain.Models;
 
 public class Lesson : IPlannableActivity
 {
-  
+    const int minimumStudentCount = 1;
+    const int ammountOfMinutesPerStudent = 10;
+
     public Lesson(TimeOnly startTime, string name, int studentCount)
     {
         StartTime = startTime;
@@ -27,9 +29,9 @@ public class Lesson : IPlannableActivity
         get;
         init
         {
-            if (value < 1)
+            if (value < minimumStudentCount)
             {
-                throw new ArgumentOutOfRangeException(nameof(value), "Studentcount for lesson must be atleast 1.");
+                throw new ArgumentOutOfRangeException(nameof(value), $"Studentcount for lesson must be atleast {minimumStudentCount}.");
             }
             field = value;
         }
@@ -45,7 +47,7 @@ public class Lesson : IPlannableActivity
         get;
         init
         {
-            int durationInMinutes = 10 * StudentCount;
+            int durationInMinutes = ammountOfMinutesPerStudent * StudentCount;
 
             value = TimeHelper.CalculateEndTime(StartTime, durationInMinutes);
             field = value;
