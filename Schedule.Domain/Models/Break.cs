@@ -2,18 +2,13 @@
 
 namespace Schedule.Domain.Models
 {
-    public class Break : IPlannableActivity
+    public class Break(TimeOnly startTime) : IPlannableActivity
     {
-        public Break(TimeOnly startTime)
-        {
-            StartTime = startTime;
-        }
-
         public Break(TimeOnly startTime, int durationInMinutes) : this(startTime)
         {
             DurationInMinutes = durationInMinutes;
 
-            if (durationInMinutes==0) 
+            if (durationInMinutes == 0)
             {
                 DurationInMinutes = 60;
             }
@@ -22,7 +17,7 @@ namespace Schedule.Domain.Models
         public TimeOnly StartTime
         {
             get;
-        }
+        } = startTime;
 
         public TimeOnly EndTime
         {
@@ -41,7 +36,7 @@ namespace Schedule.Domain.Models
             {
                 if (value < 1)
                 {
-                    throw new ArgumentOutOfRangeException(nameof(value), "Break must take at least 1 minute.");
+                    throw new ArgumentOutOfRangeException(nameof(value), "Break must take atleast 1 minute.");
                 }
                 field = value;
             }

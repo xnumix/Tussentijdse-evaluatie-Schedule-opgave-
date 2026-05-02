@@ -17,7 +17,7 @@ public class Lesson : IPlannableActivity
         get;
         set
         {
-            ArgumentException.ThrowIfNullOrWhiteSpace("Fill in a valid name.");
+            ArgumentException.ThrowIfNullOrWhiteSpace(value, nameof(Name));
             field = value;
         }
     }
@@ -66,7 +66,7 @@ public class Lesson : IPlannableActivity
 
     public override string? ToString()
     {
-        return $"{GetType().Name}{Name} with {StudentCount} students";
+        return $"{StartTime} - {EndTime} - {GetType().Name}{Name} with {StudentCount} students";
     }
 
     

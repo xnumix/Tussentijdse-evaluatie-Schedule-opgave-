@@ -4,115 +4,79 @@ namespace Schedule.Presentation
 {
     public class ClassScheduleApplication
     {
-        private DomainManager domainManager;
+        // Dependency injection van de domain laag
+        private readonly DomainManager _domainManager;
 
         public ClassScheduleApplication(DomainManager domainManager)
         {
-            this.domainManager = domainManager;
+            _domainManager = domainManager;
+            StartApplication();
         }
 
-        public static void StartApplication(DomainManager _domainManager)
+        public void StartApplication()
         {
             while (true)
             {
-                Console.WriteLine("Menu\n1. Add Lesson\n2. Add Excursion\n3. Add Break \n0. Stop\nPick an option");
+                Console.WriteLine("MENU\nPick an option:\n1. Add Lesson\n2. Add Excursion\n3. Add Break \n0. Stop");
+                int inputNummer = int.Parse(Console.ReadLine());
 
-                int inputNummer = ReadIntBetween(0, 3);
-                //switch (inputNummer)
-                //{
-                //    case 1:
-                //        AddLesson(_domainManager);
-                //        break;
-                //    case 2:
-                //        AddExcursion(_domainManager);
-                //        break;
-                //    case 3:
-                //        AddBreak(_domainManager);
-                //        break;
-                //    case 0:
-                //        ShutdownApplication(_domainManager);
-                //        return;
-                //}
-            }
-        }
-        private static int ReadIntBetween(int min, int max)
-        {
-            while (true)
-            {
-                try
+                switch (inputNummer)
                 {
-                    int input = int.Parse(Console.ReadLine());
-                    if (input < min || input > max)
-                        throw new ArgumentException($"Choice must be between {min} & {max}");
-                    return input;
-                }
-                catch (ArgumentException ex)
-                {
-                    Console.WriteLine($"ArgumentException {ex.Message}");
-                }
-                catch (FormatException ex)
-                {
-                    Console.WriteLine($"FormatException {ex.Message}");
+                    case 1:
+                        AddLesson();
+                            break;
+                    case 2:
+                        Console.WriteLine("Test");
+                        break;
+                    case 3:
+                        AddBreak();
+                        break;
+                    case 0:
+                        Console.WriteLine("Test");
+                        return;
                 }
             }
         }
 
-        private static void ShutdownApplication(DomainManager domainManager)
+
+        private void AddLesson()
         {
-            List<string> activitiesAsStrings = domainManager.GetActivities();
-            if (activitiesAsStrings.Count == 0)
-                Console.WriteLine("No Activities on planner");
-            else
-            {
-                Console.WriteLine("Activities on planner:");
-                foreach (string s in activitiesAsStrings)
-                    Console.WriteLine(s);
-            }
-            Console.WriteLine("Stopping application...");
-            Environment.Exit(0);
+            _domainManager.CreateNewLesson();
         }
 
-        private static void AddLesson(DomainManager _domainManager)
+        private void AddBreak()
         {
-            Console.WriteLine("Pick a starttime for the lesson");
-            TimeOnly startTime = TimeOnly.Parse(Console.ReadLine());
-
-            Console.WriteLine("Give the name for the lesson");
-            string lessonName = Console.ReadLine();
-
-            Console.WriteLine("Give the studentcount");
-            int studentCount = int.Parse(Console.ReadLine());
-
-            Domain.Models.Lesson newLesson = new(startTime, lessonName, studentCount); 
+            _domainManager.CreateNewBreak();
         }
 
-        private static void AddExcursion(DomainManager _domainManager)
-        {
-            Console.WriteLine("Pick a starttime for the excursion");
-            TimeOnly startTime = TimeOnly.Parse(Console.ReadLine());
+        
+        //    private static void AddExcursion(DomainManager _domainManager)
+        //    {
+        //        Console.WriteLine("Pick a starttime for the excursion");
+        //        TimeOnly startTime = TimeOnly.Parse(Console.ReadLine());
 
-            Console.WriteLine("Give the name for the excursion");
-            string excursionName = Console.ReadLine();
+        //        Console.WriteLine("Give the name for the excursion");
+        //        string excursionName = Console.ReadLine();
 
-            Console.WriteLine("Give the studentcount");
-            int studentCount = int.Parse(Console.ReadLine());
+        //        Console.WriteLine("Give the studentcount");
+        //        int studentCount = int.Parse(Console.ReadLine());
 
-            Console.WriteLine("Give the length of travel in minutes");
-            int travelLength=int.Parse(Console.ReadLine());
+        //        Console.WriteLine("Give the length of travel in minutes");
+        //        int travelLength=int.Parse(Console.ReadLine());
 
-            Domain.Models.Excursion newExcursion = new(startTime, excursionName, studentCount, travelLength);
-        }
+        //        Domain.Models.Excursion newExcursion = new(startTime, excursionName, studentCount, travelLength);
+        //    }
 
-        private static void AddBreak(DomainManager _domainManager)
-        {
-            Console.WriteLine("Pick a starttime for the break");
-            TimeOnly startTime = TimeOnly.Parse(Console.ReadLine());
+        //    private static void AddBreak()
+        //    {
+        //        Console.WriteLine("Pick a starttime for the break");
+        //        TimeOnly startTime = TimeOnly.Parse(Console.ReadLine());
 
-            Console.WriteLine("Give the length of the break");
-            int breakCount = int.Parse(Console.ReadLine());
+        //        Console.WriteLine("Give the length of the break");
+        //        int breakCount = int.Parse(Console.ReadLine());
 
-            Domain.Models.Break newBreak = new(startTime, breakCount);
-        }
+        //        Break newBreak = new(startTime, breakCount);
+        //    }
 
     }
 }

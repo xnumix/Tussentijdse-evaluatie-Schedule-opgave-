@@ -4,6 +4,15 @@ namespace Schedule.Persistance
 {
     public class ActivityRepository : IActivityRepository
     {
+
+        //private List<> _movies = [];
+
+        //public List<Movie> GetMovies()
+        //{
+        //    return _movies;
+        //}
+
+
         public List<string> AddNewActivityToPlanning()
         {
             throw new NotImplementedException();
