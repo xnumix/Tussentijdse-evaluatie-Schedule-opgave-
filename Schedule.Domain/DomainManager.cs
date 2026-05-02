@@ -37,6 +37,33 @@ namespace Schedule.Domain
             return lesson;
         }
 
+        public Excursion CreateNewExcursion()
+        {
+            //int travelTime, TimeOnly startTime, string name, int studentCount
+
+            List<Excursion> Excursions = [];
+
+            Console.WriteLine("Give the name of the excursion:");
+            string name = Console.ReadLine();
+
+            Console.WriteLine("Give the start-time of excursion:");
+            TimeOnly starttime = TimeOnly.Parse(Console.ReadLine());
+
+            Console.WriteLine("Give the ammount of students:");
+            int studentCount = int.Parse(Console.ReadLine());
+
+            Console.WriteLine("How long will the excursion take?:");
+            int travelTime = int.Parse(Console.ReadLine());
+
+            Excursion excursion = new(travelTime,starttime, name, studentCount);
+            Excursions.Add(excursion);
+
+            foreach (var Excursion in Excursions)
+                Console.WriteLine(Excursion);
+
+            return excursion;
+        }
+
         public Break CreateNewBreak()
         {
             List<Break> Pauzes = [];

@@ -26,7 +26,7 @@ namespace Schedule.Presentation
                         AddLesson();
                             break;
                     case 2:
-                        Console.WriteLine("Test");
+                        AddExcursion();
                         break;
                     case 3:
                         AddBreak();
@@ -49,7 +49,11 @@ namespace Schedule.Presentation
             _domainManager.CreateNewBreak();
         }
 
-        
+        private void AddExcursion()
+        {
+            _domainManager.CreateNewExcursion();
+        }
+
         //    private static void AddExcursion(DomainManager _domainManager)
         //    {
         //        Console.WriteLine("Pick a starttime for the excursion");

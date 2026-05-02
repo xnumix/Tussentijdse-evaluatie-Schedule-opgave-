@@ -24,7 +24,7 @@ public class Excursion : Lesson
         }
     }
 
-    public TimeOnly EndTime
+    public TimeOnly EndTimee
     {
         get;
         init
@@ -40,6 +40,6 @@ public class Excursion : Lesson
 
     public override string? ToString()
     {
-        return $"{GetType().Name} to {Name} with {StudentCount} students";
+        return $"{StartTime} - {EndTimee} - {GetType().Name} to {Name} with {StudentCount} students";
     }
 }
