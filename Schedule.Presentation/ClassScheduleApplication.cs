@@ -18,21 +18,21 @@ namespace Schedule.Presentation
                 Console.WriteLine("Menu\n1. Add Lesson\n2. Add Excursion\n3. Add Break \n0. Stop\nPick an option");
 
                 int inputNummer = ReadIntBetween(0, 3);
-                switch (inputNummer)
-                {
-                    case 1:
-                        AddLesson(_domainManager);
-                        break;
-                    case 2:
-                        AddExcursion(_domainManager);
-                        break;
-                    case 3:
-                        AddBreak(_domainManager);
-                        break;
-                    case 0:
-                        ShutdownApplication(_domainManager);
-                        return;
-                }
+                //switch (inputNummer)
+                //{
+                //    case 1:
+                //        AddLesson(_domainManager);
+                //        break;
+                //    case 2:
+                //        AddExcursion(_domainManager);
+                //        break;
+                //    case 3:
+                //        AddBreak(_domainManager);
+                //        break;
+                //    case 0:
+                //        ShutdownApplication(_domainManager);
+                //        return;
+                //}
             }
         }
         private static int ReadIntBetween(int min, int max)

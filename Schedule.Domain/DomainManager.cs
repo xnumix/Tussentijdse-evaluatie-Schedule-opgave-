@@ -5,27 +5,11 @@ namespace Schedule.Domain
 {
     public class DomainManager
     {
-        private IActivityRepository repository;
-
-        public DomainManager(IPlannableActivity plannableActivity)
-        {
-
-        }
-
         public DomainManager(IActivityRepository repository)
         {
-            this.repository = repository;
+            Repository = repository;
         }
 
-        public List<string> GetActivities()
-        {
-            throw new NotImplementedException();
-        }
+        public IActivityRepository Repository { get; }
     }
 }
-/*     public DomainManager(IDestinationRepository destinations)
-        {
-            _destinations = destinations;
-            _planner = new AircraftPlanner();
-        }
-*/

@@ -4,20 +4,15 @@ namespace Schedule.Persistance
 {
     public class ActivityRepository : IActivityRepository
     {
-
-        //private List<storedActivity> _movies =
-        public List<newActivity> AddNewActivityToPlanning()
+        public List<string> AddNewActivityToPlanning()
         {
             throw new NotImplementedException();
         }
 
-
-        public List<storedActivity> GetActivity()
+        public List<string> GetActivitiesFromPlanning()
         {
             throw new NotImplementedException();
         }
-
- 
     }
 }
 /* private readonly HashSet<IFuelableAircraft> _iAircrafts = [];

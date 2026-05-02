@@ -2,7 +2,7 @@
 
 public interface IActivityRepository
 {
-    List<string> GetActivity();
+    List<string> GetActivitiesFromPlanning();
 
     List<string> AddNewActivityToPlanning();
 

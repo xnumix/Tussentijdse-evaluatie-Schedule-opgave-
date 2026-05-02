@@ -1,34 +1,30 @@
-﻿namespace Schedule.Domain.Models;
+﻿using System.Xml.Linq;
+
+namespace Schedule.Domain.Models;
 
 public class Excursion : Lesson
 {
-    private int _travelTimeInMinutes;
-    private TimeOnly _endTime;
-    private int _studentCount;
-
-    public Excursion(TimeOnly startTime, string name, int studentCount, int travelTime) : base(startTime, name, studentCount)
+    public Excursion(int travelTime, TimeOnly startTime, string name, int studentCount) : base(startTime, name, studentCount)
     {
         TravelTimeInMinutes = travelTime;
     }
-
-    //properties
+   
     public int TravelTimeInMinutes
     {
-        get => _travelTimeInMinutes;
+        get;
         init
         {
             if (value < 1 || value > 120)
             {
                 throw new ArgumentOutOfRangeException(nameof(value), "Traveltime must be between 1 and 120.");
             }
-            _travelTimeInMinutes = value;
+            field = value;
         }
     }
 
-
     public TimeOnly EndTime
     {
-        get => _endTime;
+        get;
         init
         {
             int durationInMinutes = 10 * StudentCount;
@@ -36,21 +32,7 @@ public class Excursion : Lesson
 
             int totalDuration = durationInMinutes + travelDuration;
 
-            _endTime = Domain.Models.TimeHelper.CalculateEndTime(StartTime, totalDuration);
-        }
-    }
-
-    public int StudentCount
-    {
-        get => _studentCount;
-        init
-        {
-            if (value < 1 || value >20)
-            {
-                throw new ArgumentOutOfRangeException(nameof(value), "Studentcount for excursion must be between 1 and 20.");
-            }
-
-            _studentCount = value;
+            field = TimeHelper.CalculateEndTime(StartTime, totalDuration);
         }
     }
 

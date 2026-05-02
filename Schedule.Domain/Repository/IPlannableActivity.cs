@@ -2,8 +2,8 @@
 
 public interface IPlannableActivity : IComparable<IPlannableActivity>
 {
-    public TimeOnly StartTime { get; init; }
-    public TimeOnly EndTime { get; init; }
+    public TimeOnly StartTime { get; }
+    public TimeOnly EndTime { get; }
 }
 
 //Readonly
