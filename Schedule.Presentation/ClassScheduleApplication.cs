@@ -19,7 +19,6 @@ namespace Schedule.Presentation
         {
             while (true)
             {
-
                 Console.Write("What is the starttime of the day (HH:MM)?: ");
                 TimeOnly dayStartTime = AskTimeOfDay();
 

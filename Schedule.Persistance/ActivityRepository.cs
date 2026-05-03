@@ -11,6 +11,7 @@ namespace Schedule.Persistance
         {
             TimeHelper.ValidateNoOverlaps(activity,_activities);
             _activities.Add(activity);
+            _activities.Sort();
         }
         public IReadOnlyList<IPlannableActivity> GetActivities() => _activities.AsReadOnly();
     }
