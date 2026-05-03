@@ -23,7 +23,6 @@ namespace Schedule.Domain
         {
             List<Lesson> Lessons = [];
 
-
             Lesson lesson = new(starttime,name,studentCount);
             Lessons.Add(lesson);
 
@@ -33,24 +32,11 @@ namespace Schedule.Domain
             return lesson;
         }
 
-        public Excursion CreateNewExcursion()
+        public Excursion CreateNewExcursion(int travelTime, TimeOnly starttime, string name, int studentCount)
         {
-
             List<Excursion> Excursions = [];
 
-            Console.WriteLine("Give the name of the excursion:");
-            string name = Console.ReadLine();
-
-            Console.WriteLine("Give the start-time of excursion:");
-            TimeOnly starttime = TimeOnly.Parse(Console.ReadLine());
-
-            Console.WriteLine("Give the ammount of students:");
-            int studentCount = int.Parse(Console.ReadLine());
-
-            Console.WriteLine("How long will the excursion take?:");
-            int travelTime = int.Parse(Console.ReadLine());
-
-            Excursion excursion = new(travelTime,starttime, name, studentCount);
+            Excursion excursion = new(travelTime, starttime, name, studentCount);
             Excursions.Add(excursion);
 
             foreach (var Excursion in Excursions)
@@ -59,15 +45,9 @@ namespace Schedule.Domain
             return excursion;
         }
 
-        public Break CreateNewBreak()
+        public Break CreateNewBreak(TimeOnly starttime, int lengthBreak)
         {
             List<Break> Pauzes = [];
-
-            Console.WriteLine("Give the start-time of break:");
-            TimeOnly starttime = TimeOnly.Parse(Console.ReadLine());
-
-            Console.WriteLine("How many minutes is the break:");
-            int lengthBreak = int.Parse(Console.ReadLine());
 
             Break pauze = new(starttime, lengthBreak);
             Pauzes.Add(pauze);

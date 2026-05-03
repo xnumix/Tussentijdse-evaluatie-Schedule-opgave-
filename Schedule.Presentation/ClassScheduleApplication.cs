@@ -1,4 +1,5 @@
 ﻿using Schedule.Domain;
+using System.Xml.Linq;
 
 namespace Schedule.Presentation
 {
@@ -57,12 +58,31 @@ namespace Schedule.Presentation
 
         private void AddBreak()
         {
-            _domainManager.CreateNewBreak();
+
+            Console.WriteLine("Give the start-time of break:");
+            TimeOnly starttime = TimeOnly.Parse(Console.ReadLine());
+
+            Console.WriteLine("How many minutes is the break:");
+            int lengthBreak = int.Parse(Console.ReadLine());
+
+            _domainManager.CreateNewBreak(starttime, lengthBreak);
         }
 
         private void AddExcursion()
         {
-            _domainManager.CreateNewExcursion();
+            Console.WriteLine("Give the name of the excursion:");
+            string excursionName = Console.ReadLine();
+
+            Console.WriteLine("Give the start-time of excursion:");
+            TimeOnly starttime = TimeOnly.Parse(Console.ReadLine());
+
+            Console.WriteLine("Give the ammount of students:");
+            int studentCount = int.Parse(Console.ReadLine());
+
+            Console.WriteLine("How long will the excursion take?:");
+            int travelTime = int.Parse(Console.ReadLine());
+
+            _domainManager.CreateNewExcursion(travelTime, starttime, excursionName, studentCount);
         }
 
         //    private static void AddExcursion(DomainManager _domainManager)
