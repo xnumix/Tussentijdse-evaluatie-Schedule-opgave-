@@ -19,22 +19,31 @@ namespace Schedule.Presentation
             while (true)
             {
                 Console.WriteLine("MENU\nPick an option:\n1. Add Lesson\n2. Add Excursion\n3. Add Break \n0. Stop");
-                int inputNummer = int.Parse(Console.ReadLine());
-
-                switch (inputNummer)
+                
+                string? inputNummer = Console.ReadLine();
+                try
                 {
-                    case 1:
-                        AddLesson();
+                    switch (inputNummer)
+                    {
+                        case "1":
+                            AddLesson();
                             break;
-                    case 2:
-                        AddExcursion();
-                        break;
-                    case 3:
-                        AddBreak();
-                        break;
-                    case 0:
-                        Console.WriteLine("Test");
-                        return;
+                        case "2":
+                            AddExcursion();
+                            break;
+                        case "3":
+                            AddBreak();
+                            break;
+                        case "0":
+                            return;
+                        default:
+                            Console.WriteLine("Invalid choice.");
+                            break;
+                    }
+                }
+                catch (Exception ex) 
+                {
+                    Console.WriteLine($"Error: {ex.Message}");
                 }
             }
         }
@@ -42,7 +51,6 @@ namespace Schedule.Presentation
 
         private void AddLesson()
         {
-
             Console.WriteLine("Give the name of the lesson:");
             string lessonName = Console.ReadLine();
 
@@ -58,7 +66,6 @@ namespace Schedule.Presentation
 
         private void AddBreak()
         {
-
             Console.WriteLine("Give the start-time of break:");
             TimeOnly starttime = TimeOnly.Parse(Console.ReadLine());
 
@@ -84,34 +91,5 @@ namespace Schedule.Presentation
 
             _domainManager.CreateNewExcursion(travelTime, starttime, excursionName, studentCount);
         }
-
-        //    private static void AddExcursion(DomainManager _domainManager)
-        //    {
-        //        Console.WriteLine("Pick a starttime for the excursion");
-        //        TimeOnly startTime = TimeOnly.Parse(Console.ReadLine());
-
-        //        Console.WriteLine("Give the name for the excursion");
-        //        string excursionName = Console.ReadLine();
-
-        //        Console.WriteLine("Give the studentcount");
-        //        int studentCount = int.Parse(Console.ReadLine());
-
-        //        Console.WriteLine("Give the length of travel in minutes");
-        //        int travelLength=int.Parse(Console.ReadLine());
-
-        //        Domain.Models.Excursion newExcursion = new(startTime, excursionName, studentCount, travelLength);
-        //    }
-
-        //    private static void AddBreak()
-        //    {
-        //        Console.WriteLine("Pick a starttime for the break");
-        //        TimeOnly startTime = TimeOnly.Parse(Console.ReadLine());
-
-        //        Console.WriteLine("Give the length of the break");
-        //        int breakCount = int.Parse(Console.ReadLine());
-
-        //        Break newBreak = new(startTime, breakCount);
-        //    }
-
     }
 }
