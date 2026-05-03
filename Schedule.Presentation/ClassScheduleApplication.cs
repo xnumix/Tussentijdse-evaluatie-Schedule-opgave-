@@ -1,5 +1,6 @@
 ﻿using Schedule.Domain;
 using Schedule.Domain.Models;
+using Schedule.Domain.Repository;
 
 namespace Schedule.Presentation
 {
@@ -53,7 +54,7 @@ namespace Schedule.Presentation
 
         private void ListAllActivities()
         {
-            IReadOnlyList<Activity> all = _domainManager.ListActivities();
+            IReadOnlyList<IPlannableActivity> all = _domainManager.ListActivities();
             if (all.Count == 0) { Console.WriteLine("(empty)"); return; }
 
             // POLYMORFISME in actie: elk Activity roept zijn eigen ToString aan,

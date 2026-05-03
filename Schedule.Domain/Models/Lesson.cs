@@ -1,8 +1,7 @@
-﻿using Schedule.Domain.Repository;
-
+﻿
 namespace Schedule.Domain.Models;
 
-public class Lesson : Activity, IPlannableActivity
+public class Lesson : Activity
 {
     const int minimumStudentCount = 1;
     const int ammountOfMinutesPerStudent = 10;
@@ -36,8 +35,8 @@ public class Lesson : Activity, IPlannableActivity
         }
     }
 
-
-    public TimeOnly EndTime
+    // om ervoor te zorgen dat de endtime overriden wordt vanuit de abstracte klasse, anders heb ik 2 endtimes
+    public override TimeOnly EndTime
     {
         get
         {
@@ -45,12 +44,6 @@ public class Lesson : Activity, IPlannableActivity
 
             return TimeHelper.CalculateEndTime(StartTime, durationInMinutes);
         }
-    }
-
-
-    int IComparable<IPlannableActivity>.CompareTo(IPlannableActivity? other)
-    {
-        throw new NotImplementedException();
     }
     
     public override string GetCategory() => "Lesson";

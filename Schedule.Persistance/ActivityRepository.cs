@@ -5,10 +5,13 @@ namespace Schedule.Persistance
 {
     public class ActivityRepository : IActivityRepository
     {
-        private readonly List<Activity> _activities = [];
+        private readonly List<IPlannableActivity> _activities = [];
 
-        public void StoreActivity(Activity activity) => _activities.Add(activity);
-
-        public IReadOnlyList<Activity> GetActivities() => _activities.AsReadOnly();
+        public void StoreActivity(Activity activity)
+        {
+            TimeHelper.ValidateNoOverlaps(activity,_activities);
+            _activities.Add(activity);
+        }
+        public IReadOnlyList<IPlannableActivity> GetActivities() => _activities.AsReadOnly();
     }
 }

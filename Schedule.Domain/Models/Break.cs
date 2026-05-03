@@ -2,7 +2,7 @@
 
 namespace Schedule.Domain.Models
 {
-    public class Break : Activity, IPlannableActivity
+    public class Break : Activity
     {
         public Break(TimeOnly startTime, int durationInMinutes) : base(startTime)
         {
@@ -14,7 +14,7 @@ namespace Schedule.Domain.Models
             }
         }
 
-        public TimeOnly EndTime=> TimeHelper.CalculateEndTime(StartTime, DurationInMinutes);
+        public override TimeOnly EndTime => TimeHelper.CalculateEndTime(StartTime, DurationInMinutes);
         
         public int DurationInMinutes
         {
@@ -29,10 +29,6 @@ namespace Schedule.Domain.Models
             }
         }
 
-        public int CompareTo(IPlannableActivity? other)
-        {
-            throw new NotImplementedException();
-        }
         public override string GetCategory() => "Break";
 
         public override string? ToString()

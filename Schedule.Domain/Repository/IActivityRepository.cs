@@ -5,5 +5,5 @@ namespace Schedule.Domain.Repository;
 public interface IActivityRepository
 {
     void StoreActivity(Activity activity);
-    IReadOnlyList<Activity> GetActivities();
+    IReadOnlyList<IPlannableActivity> GetActivities();
 }
