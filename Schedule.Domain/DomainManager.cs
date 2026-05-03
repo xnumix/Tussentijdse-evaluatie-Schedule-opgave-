@@ -1,4 +1,5 @@
-﻿using Schedule.Domain.Models;
+using Schedule.Domain.DTO;
+using Schedule.Domain.Models;
 using Schedule.Domain.Repository;
 
 namespace Schedule.Domain
@@ -22,7 +23,14 @@ namespace Schedule.Domain
         public void CreateNewBreak(TimeOnly StartDay, TimeOnly EndDay,TimeOnly starttime, int lengthBreak)
             => StoreActivity(new Break(starttime, lengthBreak), StartDay, EndDay);
 
-        public IReadOnlyList<IPlannableActivity>ListActivities() => _repository.GetActivities();
+        public IReadOnlyList<ActivityDto> ListActivities()
+        {
+            return _repository.GetActivities()
+                .OfType<Activity>()
+                .Select(a => new ActivityDto(a.StartTime, a.EndTime, a.ToString() ?? string.Empty))
+                .ToList()
+                .AsReadOnly();
+        }
 
         public void StoreActivity(Activity activity, TimeOnly StartDay, TimeOnly EndDay)
         {

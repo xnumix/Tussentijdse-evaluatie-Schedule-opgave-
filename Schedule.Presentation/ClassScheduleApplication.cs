@@ -1,6 +1,5 @@
-﻿using Schedule.Domain;
-using Schedule.Domain.Models;
-using Schedule.Domain.Repository;
+using Schedule.Domain;
+using Schedule.Domain.DTO;
 
 namespace Schedule.Presentation
 {
@@ -63,13 +62,11 @@ namespace Schedule.Presentation
 
         private void ListAllActivities()
         {
-            IReadOnlyList<IPlannableActivity> all = _domainManager.ListActivities();
+            IReadOnlyList<ActivityDto> all = _domainManager.ListActivities();
             if (all.Count == 0) { Console.WriteLine("(empty)"); return; }
 
-            // POLYMORFISME in actie: elk Activity roept zijn eigen ToString aan,
-            // de presentation-laag weet niet of het een lesson, break of excursion is.
-            foreach (Activity a in all)
-                Console.WriteLine(a);
+            foreach (ActivityDto a in all)
+                Console.WriteLine(a.Display);
         }
 
         private void AddLesson(TimeOnly StartDay, TimeOnly EndDay)
@@ -124,7 +121,7 @@ namespace Schedule.Presentation
             {
                 try
                 {
-                    time = TimeOnly.Parse(Console.ReadLine());                
+                    time = TimeOnly.Parse(Console.ReadLine());
                 }
                 catch (Exception ex)
                 {
