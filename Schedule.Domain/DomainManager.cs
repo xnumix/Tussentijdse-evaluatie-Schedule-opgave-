@@ -18,13 +18,28 @@ namespace Schedule.Domain
             => _repository.StoreDay(new Day(date, startTime, endTime));
 
         public void CreateNewLesson(DateOnly dayDate, TimeOnly starttime, string name, int studentCount)
-            => GetDayOrThrow(dayDate).AddActivity(new Lesson(starttime, name, studentCount));
+        {
+            Day day = GetDayOrThrow(dayDate);
+            Lesson lesson = new(starttime, name, studentCount);
+            day.AddActivity(lesson);
+            _repository.AddActivity(day, lesson);
+        }
 
         public void CreateNewExcursion(DateOnly dayDate, int travelTime, TimeOnly starttime, string name, int studentCount)
-            => GetDayOrThrow(dayDate).AddActivity(new Excursion(travelTime, starttime, name, studentCount));
+        {
+            Day day = GetDayOrThrow(dayDate);
+            Excursion excursion = new(travelTime, starttime, name, studentCount);
+            day.AddActivity(excursion);
+            _repository.AddActivity(day, excursion);
+        }
 
         public void CreateNewBreak(DateOnly dayDate, TimeOnly starttime, int lengthBreak)
-            => GetDayOrThrow(dayDate).AddActivity(new Break(starttime, lengthBreak));
+        {
+            Day day = GetDayOrThrow(dayDate);
+            Break br = new(starttime, lengthBreak);
+            day.AddActivity(br);
+            _repository.AddActivity(day, br);
+        }
 
         public IReadOnlyList<DayDto> ListDays()
             => _repository.GetDays().Select(ToDto).ToList().AsReadOnly();

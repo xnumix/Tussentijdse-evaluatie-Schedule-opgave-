@@ -7,4 +7,5 @@ public interface IDayRepository
     void StoreDay(Day day);
     IReadOnlyList<Day> GetDays();
     Day? GetDay(DateOnly date);
+    void AddActivity(Day day, Activity activity);
 }
