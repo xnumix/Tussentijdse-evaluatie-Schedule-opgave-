@@ -1,9 +1,8 @@
-﻿namespace Schedule.Domain.Repository;
+﻿using Schedule.Domain.Models;
+
+namespace Schedule.Domain.Repository;
 
 public interface IActivityRepository
 {
-    List<string> GetActivitiesFromPlanning();
-
-    List<string> AddNewActivityToPlanning();
-
+    void StoreActivity(Activity activity);
 }

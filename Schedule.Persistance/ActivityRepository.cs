@@ -1,38 +1,12 @@
-﻿using Schedule.Domain.Repository;
+﻿using Schedule.Domain.Models;
+using Schedule.Domain.Repository;
 
 namespace Schedule.Persistance
 {
     public class ActivityRepository : IActivityRepository
     {
+        private readonly List<Activity> _activities = [];
 
-        //private List<> _movies = [];
-
-        //public List<Movie> GetMovies()
-        //{
-        //    return _movies;
-        //}
-
-
-        public List<string> AddNewActivityToPlanning()
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<string> GetActivitiesFromPlanning()
-        {
-            throw new NotImplementedException();
-        }
+        public void StoreActivity(Activity activity) => _activities.Add(activity);
     }
 }
-/* private readonly HashSet<IFuelableAircraft> _iAircrafts = [];
-
-    public void AddToPlanner(IFuelableAircraft iAircraft)
-    {
-        _iAircrafts.Add(iAircraft);
-    }
-
-    public List<IFuelableAircraft> GetAircrafts()
-    {
-        return _iAircrafts.ToList();
-    }
-*/

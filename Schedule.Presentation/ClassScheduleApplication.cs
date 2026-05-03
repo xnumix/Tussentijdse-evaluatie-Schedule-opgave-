@@ -48,7 +48,6 @@ namespace Schedule.Presentation
             }
         }
 
-
         private void AddLesson()
         {
             Console.WriteLine("Give the name of the lesson:");

@@ -1,6 +1,5 @@
 ﻿using Schedule.Domain.Models;
 using Schedule.Domain.Repository;
-using System.Xml.Linq;
 
 namespace Schedule.Domain
 {
@@ -14,50 +13,13 @@ namespace Schedule.Domain
             _repository = repository;
         }
 
-        public void CreateNewLesson(string name, TimeOnly starttime, int studentCount)
-        {
-            //_repository.StoreActivity();
-        }
+        public void CreateNewLesson(TimeOnly starttime, string name, int studentCount)
+            => _repository.StoreActivity(new Lesson(starttime, name, studentCount));
 
-        public Lesson CreateNewLesson(TimeOnly starttime, string name, int studentCount) 
-        {
-            List<Lesson> Lessons = [];
+        public void CreateNewExcursion(int travelTime, TimeOnly starttime, string name, int studentCount)
+            => _repository.StoreActivity(new Excursion(travelTime, starttime, name, studentCount));
 
-            Lesson lesson = new(starttime,name,studentCount);
-            Lessons.Add(lesson);
-
-            foreach (var Lesson in Lessons)
-                Console.WriteLine(Lesson);
-
-            return lesson;
-        }
-
-        public Excursion CreateNewExcursion(int travelTime, TimeOnly starttime, string name, int studentCount)
-        {
-            List<Excursion> Excursions = [];
-
-            Excursion excursion = new(travelTime, starttime, name, studentCount);
-            Excursions.Add(excursion);
-
-            foreach (var Excursion in Excursions)
-                Console.WriteLine(Excursion);
-
-            return excursion;
-        }
-
-        public Break CreateNewBreak(TimeOnly starttime, int lengthBreak)
-        {
-            List<Break> Pauzes = [];
-
-            Break pauze = new(starttime, lengthBreak);
-            Pauzes.Add(pauze);
-
-            foreach (var Pauze in Pauzes)
-                Console.WriteLine(Pauze);
-
-            return pauze;
-        }
-
-        
+        public void CreateNewBreak(TimeOnly starttime, int lengthBreak)
+            => _repository.StoreActivity(new Break(starttime, lengthBreak));
     }
 }
