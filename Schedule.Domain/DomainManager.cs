@@ -13,15 +13,26 @@ namespace Schedule.Domain
             _repository = repository;
         }
 
-        public void CreateNewLesson(TimeOnly starttime, string name, int studentCount)
-            => _repository.StoreActivity(new Lesson(starttime, name, studentCount));
+        public void CreateNewLesson(TimeOnly StartDay, TimeOnly EndDay, TimeOnly starttime, string name, int studentCount)
+            => StoreActivity(new Lesson(starttime, name, studentCount), StartDay, EndDay);
 
-        public void CreateNewExcursion(int travelTime, TimeOnly starttime, string name, int studentCount)
-            => _repository.StoreActivity(new Excursion(travelTime, starttime, name, studentCount));
+        public void CreateNewExcursion(TimeOnly StartDay, TimeOnly EndDay, int travelTime, TimeOnly starttime, string name, int studentCount)
+            => StoreActivity(new Excursion(travelTime, starttime, name, studentCount), StartDay, EndDay);
 
-        public void CreateNewBreak(TimeOnly starttime, int lengthBreak)
-            => _repository.StoreActivity(new Break(starttime, lengthBreak));
+        public void CreateNewBreak(TimeOnly StartDay, TimeOnly EndDay,TimeOnly starttime, int lengthBreak)
+            => StoreActivity(new Break(starttime, lengthBreak), StartDay, EndDay);
 
         public IReadOnlyList<IPlannableActivity>ListActivities() => _repository.GetActivities();
-    }
+
+        public void StoreActivity(Activity activity, TimeOnly StartDay, TimeOnly EndDay)
+        {
+            bool isInScheduele= TimeHelper.FitsInSchedule(activity, StartDay, EndDay);
+
+            if (isInScheduele == false)
+            {
+                throw new OutOfScheduleRangeException("Does not fit in schedule", StartDay, EndDay);
+            }
+            else _repository.StoreActivity(activity);
+        }
+}
 }

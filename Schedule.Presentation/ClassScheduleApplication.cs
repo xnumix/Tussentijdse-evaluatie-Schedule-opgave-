@@ -35,15 +35,15 @@ namespace Schedule.Presentation
                         switch (inputNummer)
                         {
                             case "1":
-                                AddLesson();
+                                AddLesson(dayStartTime, dayEndTime);
                                 ListAllActivities();
                                 break;
                             case "2":
-                                AddExcursion();
+                                AddExcursion(dayStartTime, dayEndTime);
                                 ListAllActivities();
                                 break;
                             case "3":
-                                AddBreak();
+                                AddBreak(dayStartTime, dayEndTime);
                                 ListAllActivities();
                                 break;
                             case "0":
@@ -72,7 +72,7 @@ namespace Schedule.Presentation
                 Console.WriteLine(a);
         }
 
-        private void AddLesson()
+        private void AddLesson(TimeOnly StartDay, TimeOnly EndDay)
         {
             Console.WriteLine("Give the name of the lesson:");
             string lessonName = Console.ReadLine();
@@ -83,11 +83,11 @@ namespace Schedule.Presentation
             Console.WriteLine("Give the ammount of students:");
             int studentCount = int.Parse(Console.ReadLine());
 
-            _domainManager.CreateNewLesson(starttime, lessonName, studentCount);
+            _domainManager.CreateNewLesson(StartDay, EndDay, starttime, lessonName, studentCount);
             Console.WriteLine("Lesson added.");
         }
 
-        private void AddBreak()
+        private void AddBreak(TimeOnly StartDay, TimeOnly EndDay)
         {
             Console.WriteLine("Give the start-time of break:");
             TimeOnly starttime = TimeOnly.Parse(Console.ReadLine());
@@ -95,11 +95,11 @@ namespace Schedule.Presentation
             Console.WriteLine("How many minutes is the break:");
             int lengthBreak = int.Parse(Console.ReadLine());
 
-            _domainManager.CreateNewBreak(starttime, lengthBreak);
+            _domainManager.CreateNewBreak(StartDay, EndDay, starttime, lengthBreak);
             Console.WriteLine("Break added.");
         }
 
-        private void AddExcursion()
+        private void AddExcursion(TimeOnly StartDay, TimeOnly EndDay)
         {
             Console.WriteLine("Give the name of the excursion:");
             string excursionName = Console.ReadLine();
@@ -113,7 +113,7 @@ namespace Schedule.Presentation
             Console.WriteLine("How long will the excursion take?:");
             int travelTime = int.Parse(Console.ReadLine());
 
-            _domainManager.CreateNewExcursion(travelTime, starttime, excursionName, studentCount);
+            _domainManager.CreateNewExcursion(StartDay, EndDay, travelTime, starttime, excursionName, studentCount);
             Console.WriteLine("Excursion added.");
         }
 

@@ -1,18 +1,18 @@
 ﻿namespace Schedule.Domain.Models;
 
-internal class OutOfScheduleRangeException : Exception
+public class OutOfScheduleRangeException : Exception
 {
-        public OutOfScheduleRangeException()
+    public TimeOnly StartTime{ get; }
+    public TimeOnly EndTime { get; }
+
+    public OutOfScheduleRangeException()
     {
     }
 
-    public OutOfScheduleRangeException(string message)
+    public OutOfScheduleRangeException(string message, TimeOnly DayStart, TimeOnly DayEnd)
         : base(message)
     {
-    }
-
-    public OutOfScheduleRangeException(string message, Exception inner)
-        : base(message, inner)
-    {
+        StartTime = DayStart;
+        EndTime = DayEnd;
     }
 }
