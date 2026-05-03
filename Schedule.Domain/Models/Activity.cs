@@ -9,10 +9,9 @@
             StartTime = startTime;
         }
 
-        // POLYMORFISME: elke subklasse geeft hier zijn eigen invulling aan.
         public abstract string GetCategory();
 
         public override string ToString()
-        => $"[{GetCategory()}] {StartTime}";
+        => $"{StartTime}";
     }
 }

@@ -2,12 +2,12 @@
 
 namespace Schedule.Domain.Models;
 
-public class Lesson : IPlannableActivity
+public class Lesson : Activity, IPlannableActivity
 {
     const int minimumStudentCount = 1;
     const int ammountOfMinutesPerStudent = 10;
 
-    public Lesson(TimeOnly startTime, string name, int studentCount)
+    public Lesson(TimeOnly startTime, string name, int studentCount) : base(startTime)
     {
         Name = name;
         StudentCount = studentCount;
@@ -48,23 +48,17 @@ public class Lesson : IPlannableActivity
         }
     }
 
-    public TimeOnly StartTime => throw new NotImplementedException();
-
-    public int CompareTo(IPlannableActivity? other)
-    {
-        //if (other == null)
-            return 1;
-    }
 
     int IComparable<IPlannableActivity>.CompareTo(IPlannableActivity? other)
     {
         throw new NotImplementedException();
     }
+    
+    public override string GetCategory() => "Lesson";
 
     public override string? ToString()
     {
-        return $"{StartTime} - {EndTime} - {GetType().Name}{Name} with {StudentCount} students";
+        return $"{base.ToString()} - {EndTime} - {GetCategory()} {Name} with {StudentCount} students";
     }
 
-    
 }

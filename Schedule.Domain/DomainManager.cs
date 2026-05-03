@@ -1,5 +1,6 @@
 ﻿using Schedule.Domain.Models;
 using Schedule.Domain.Repository;
+using System.Xml.Linq;
 
 namespace Schedule.Domain
 {
@@ -15,10 +16,10 @@ namespace Schedule.Domain
 
         public void CreateNewLesson(string name, TimeOnly starttime, int studentCount)
         {
-            _repository.StoreActivity();
+            //_repository.StoreActivity();
         }
 
-        public Lesson CreateNewLesson(string? name) 
+        public Lesson CreateNewLesson(TimeOnly starttime, string name, int studentCount) 
         {
             List<Lesson> Lessons = [];
 
@@ -65,7 +66,10 @@ namespace Schedule.Domain
             Console.WriteLine("Give the start-time of break:");
             TimeOnly starttime = TimeOnly.Parse(Console.ReadLine());
 
-            Break pauze = new(starttime);
+            Console.WriteLine("How many minutes is the break:");
+            int lengthBreak = int.Parse(Console.ReadLine());
+
+            Break pauze = new(starttime, lengthBreak);
             Pauzes.Add(pauze);
 
             foreach (var Pauze in Pauzes)

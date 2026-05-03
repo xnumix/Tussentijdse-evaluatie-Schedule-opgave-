@@ -38,8 +38,11 @@ public class Excursion : Lesson
         }
     }
 
+    public override string GetCategory() => "Excursion";
+
+
     public override string? ToString()
     {
-        return $"{StartTime} - {EndTimee} - {GetType().Name} to {Name} with {StudentCount} students";
+        return $"{base.ToString()} - {EndTimee} - {GetType().Name} to {Name} with {StudentCount} students";
     }
 }

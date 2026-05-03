@@ -2,9 +2,9 @@
 
 namespace Schedule.Domain.Models
 {
-    public class Break(TimeOnly startTime) : IPlannableActivity
+    public class Break : Activity, IPlannableActivity
     {
-        public Break(TimeOnly startTime, int durationInMinutes) : this(startTime)
+        public Break(TimeOnly startTime, int durationInMinutes) : base(startTime)
         {
             DurationInMinutes = durationInMinutes;
 
@@ -13,11 +13,6 @@ namespace Schedule.Domain.Models
                 DurationInMinutes = 60;
             }
         }
-
-        public TimeOnly StartTime
-        {
-            get;
-        } = startTime;
 
         public TimeOnly EndTime
         {
@@ -46,10 +41,11 @@ namespace Schedule.Domain.Models
         {
             throw new NotImplementedException();
         }
+        public override string GetCategory() => "Break";
 
         public override string? ToString()
         {
-            return $"{GetType().Name} for {DurationInMinutes} minutes";
+            return $"{base.ToString()} - {EndTime}- {GetCategory()} for {DurationInMinutes} minutes";
         }
     }
 }
