@@ -14,16 +14,8 @@ namespace Schedule.Domain.Models
             }
         }
 
-        public TimeOnly EndTime
-        {
-            get;
-            init
-            {
-                value = TimeHelper.CalculateEndTime(StartTime, DurationInMinutes);
-                field = value;
-            }
-        }
-
+        public TimeOnly EndTime=> TimeHelper.CalculateEndTime(StartTime, DurationInMinutes);
+        
         public int DurationInMinutes
         {
             get;
@@ -45,7 +37,7 @@ namespace Schedule.Domain.Models
 
         public override string? ToString()
         {
-            return $"{base.ToString()} - {EndTime}- {GetCategory()} for {DurationInMinutes} minutes";
+            return $"{base.ToString()} - {EndTime} - {GetCategory()} for {DurationInMinutes} minutes";
         }
     }
 }

@@ -36,15 +36,14 @@ public class Lesson : Activity, IPlannableActivity
         }
     }
 
+
     public TimeOnly EndTime
     {
-        get;
-        init
+        get
         {
             int durationInMinutes = ammountOfMinutesPerStudent * StudentCount;
 
-            value = TimeHelper.CalculateEndTime(StartTime, durationInMinutes);
-            field = value;
+            return TimeHelper.CalculateEndTime(StartTime, durationInMinutes);
         }
     }
 

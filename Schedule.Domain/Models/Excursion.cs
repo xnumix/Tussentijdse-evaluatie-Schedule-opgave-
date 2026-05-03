@@ -5,6 +5,7 @@ public class Excursion : Lesson
     const int minimumTravelTime = 1;
     const int maximumTravelTime = 120;
     const int ammountOfMinutesPerStudent = 10;
+    const int tripToAndFromSchool = 2;
 
     public Excursion(int travelTime, TimeOnly startTime, string name, int studentCount) : base(startTime, name, studentCount)
     {
@@ -24,17 +25,16 @@ public class Excursion : Lesson
         }
     }
 
-    public TimeOnly EndTimee
+    public TimeOnly EndTime
     {
-        get;
-        init
+        get
         {
             int durationInMinutes = ammountOfMinutesPerStudent * StudentCount;
-            int travelDuration = TravelTimeInMinutes * 2;
+            int travelDuration = TravelTimeInMinutes * tripToAndFromSchool;
 
             int totalDuration = durationInMinutes + travelDuration;
 
-            field = TimeHelper.CalculateEndTime(StartTime, totalDuration);
+            return TimeHelper.CalculateEndTime(StartTime, totalDuration);
         }
     }
 
@@ -42,6 +42,6 @@ public class Excursion : Lesson
 
     public override string? ToString()
     {
-        return $"{base.ToString()} - {EndTimee} - {GetCategory()} to {Name} with {StudentCount} students";
+        return $"{base.ToString()}";
     }
 }
