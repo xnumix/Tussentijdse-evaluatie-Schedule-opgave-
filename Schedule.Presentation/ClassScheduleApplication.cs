@@ -1,11 +1,11 @@
 using Schedule.Domain;
 using Schedule.Domain.DTO;
+using Spectre.Console;
 
 namespace Schedule.Presentation
 {
     public class ClassScheduleApplication
     {
-        // Dependency injection van de domain laag
         private readonly DomainManager _domainManager;
 
         public ClassScheduleApplication(DomainManager domainManager)
@@ -16,31 +16,36 @@ namespace Schedule.Presentation
 
         public void StartApplication()
         {
-            Console.WriteLine("First, create a day to start scheduling.");
+            AnsiConsole.Write(new FigletText("Schedule").Color(Color.DodgerBlue1));
+            AnsiConsole.Write(new Rule().RuleStyle(Style.Parse("blue")));
+
+            AnsiConsole.MarkupLine("[deepskyblue1]First, create a day to start scheduling.[/]");
             CreateDayInteractive(required: true);
 
             while (true)
             {
-                Console.WriteLine();
-                Console.WriteLine("MENU\nPick an option:\n1. Add Lesson\n2. Add Excursion\n3. Add Break\n4. Add Day\n5. Show Day\n0. Stop");
+                AnsiConsole.WriteLine();
+                string choice = AnsiConsole.Prompt(
+                    new SelectionPrompt<string>()
+                        .Title("[blue]MENU[/] [grey](use arrows + enter)[/]")
+                        .HighlightStyle(new Style(foreground: Color.White, background: Color.DodgerBlue1))
+                        .AddChoices("Add Lesson", "Add Excursion", "Add Break", "Add Day", "Show Day", "Stop"));
 
-                string? input = Console.ReadLine();
                 try
                 {
-                    switch (input)
+                    switch (choice)
                     {
-                        case "1": AddLesson(); break;
-                        case "2": AddExcursion(); break;
-                        case "3": AddBreak(); break;
-                        case "4": CreateDayInteractive(required: false); break;
-                        case "5": ShowDay(); break;
-                        case "0": return;
-                        default: Console.WriteLine("Invalid choice."); break;
+                        case "Add Lesson": AddLesson(); break;
+                        case "Add Excursion": AddExcursion(); break;
+                        case "Add Break": AddBreak(); break;
+                        case "Add Day": CreateDayInteractive(required: false); break;
+                        case "Show Day": ShowDay(); break;
+                        case "Stop": return;
                     }
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Error: {ex.Message}");
+                    AnsiConsole.MarkupLine($"[red]Error:[/] {Markup.Escape(ex.Message)}");
                 }
             }
         }
@@ -51,158 +56,141 @@ namespace Schedule.Presentation
             {
                 try
                 {
-                    Console.Write("Date (YYYY-MM-DD): ");
-                    DateOnly date = AskDate();
+                    AnsiConsole.Write(new Rule("[blue]New day[/]").RuleStyle(Style.Parse("blue")).LeftJustified());
 
-                    Console.Write("Day start time (HH:MM): ");
-                    TimeOnly start = AskTimeOfDay();
-
-                    Console.Write("Day end time (HH:MM): ");
-                    TimeOnly end = AskTimeOfDay();
+                    DateOnly date = AskDate("[deepskyblue1]Date (YYYY-MM-DD):[/]");
+                    TimeOnly start = AskTime("[deepskyblue1]Day start time (HH:MM):[/]");
+                    TimeOnly end = AskTime("[deepskyblue1]Day end time (HH:MM):[/]");
 
                     _domainManager.CreateNewDay(date, start, end);
-                    Console.WriteLine($"Day {date} created.");
+                    AnsiConsole.MarkupLine($"[blue]Day {date} created.[/]");
                     return;
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Error: {ex.Message}");
+                    AnsiConsole.MarkupLine($"[red]Error:[/] {Markup.Escape(ex.Message)}");
                     if (!required) return;
-                    Console.WriteLine("A day is required to continue. Please try again.");
+                    AnsiConsole.MarkupLine("[deepskyblue1]A day is required to continue. Please try again.[/]");
                 }
             }
         }
 
-        private DayDto? PickDay()
+        private DayDto? PickDay(string title)
         {
             IReadOnlyList<DayDto> days = _domainManager.ListDays();
             if (days.Count == 0)
             {
-                Console.WriteLine("No days available. Add a day first.");
+                AnsiConsole.MarkupLine("[red]No days available. Add a day first.[/]");
                 return null;
             }
 
-            Console.WriteLine("Available days:");
-            for (int i = 0; i < days.Count; i++)
-                Console.WriteLine($"{i + 1}. {days[i].Date} ({days[i].StartTime}-{days[i].EndTime})");
+            Dictionary<string, DayDto> byLabel = days.ToDictionary(
+                d => $"{d.Date} ({d.StartTime}-{d.EndTime})");
 
-            Console.Write("Pick a day number: ");
-            if (!int.TryParse(Console.ReadLine(), out int idx) || idx < 1 || idx > days.Count)
-            {
-                Console.WriteLine("Invalid selection.");
-                return null;
-            }
-            return days[idx - 1];
+            string choice = AnsiConsole.Prompt(
+                new SelectionPrompt<string>()
+                    .Title($"[blue]{title}[/]")
+                    .HighlightStyle(new Style(foreground: Color.White, background: Color.DodgerBlue1))
+                    .AddChoices(byLabel.Keys));
+
+            return byLabel[choice];
         }
 
         private void AddLesson()
         {
-            DayDto? day = PickDay();
+            DayDto? day = PickDay("Pick a day for the lesson");
             if (day is null) return;
 
-            Console.WriteLine("Give the name of the lesson:");
-            string? lessonName = Console.ReadLine();
+            AnsiConsole.Write(new Rule("[blue]New lesson[/]").RuleStyle(Style.Parse("blue")).LeftJustified());
 
-            Console.WriteLine("Give the start-time of lesson:");
-            TimeOnly starttime = AskTimeOfDay();
+            string lessonName = AskString("[deepskyblue1]Give the name of the lesson:[/]");
+            TimeOnly starttime = AskTime("[deepskyblue1]Give the start-time of lesson:[/]");
+            int studentCount = AskInt("[deepskyblue1]Give the ammount of students:[/]");
 
-            int studentCount = AskInt("Give the ammount of students:");
-
-            _domainManager.CreateNewLesson(day.Date, starttime, lessonName ?? string.Empty, studentCount);
-            Console.WriteLine("Lesson added.");
+            _domainManager.CreateNewLesson(day.Date, starttime, lessonName, studentCount);
+            AnsiConsole.MarkupLine("[blue]Lesson added.[/]");
         }
 
         private void AddBreak()
         {
-            DayDto? day = PickDay();
+            DayDto? day = PickDay("Pick a day for the break");
             if (day is null) return;
 
-            Console.WriteLine("Give the start-time of break:");
-            TimeOnly starttime = AskTimeOfDay();
+            AnsiConsole.Write(new Rule("[blue]New break[/]").RuleStyle(Style.Parse("blue")).LeftJustified());
 
-            int lengthBreak = AskInt("How many minutes is the break:");
+            TimeOnly starttime = AskTime("[deepskyblue1]Give the start-time of break:[/]");
+            int lengthBreak = AskInt("[deepskyblue1]How many minutes is the break:[/]");
 
             _domainManager.CreateNewBreak(day.Date, starttime, lengthBreak);
-            Console.WriteLine("Break added.");
+            AnsiConsole.MarkupLine("[blue]Break added.[/]");
         }
 
         private void AddExcursion()
         {
-            DayDto? day = PickDay();
+            DayDto? day = PickDay("Pick a day for the excursion");
             if (day is null) return;
 
-            Console.WriteLine("Give the name of the excursion:");
-            string? excursionName = Console.ReadLine();
+            AnsiConsole.Write(new Rule("[blue]New excursion[/]").RuleStyle(Style.Parse("blue")).LeftJustified());
 
-            Console.WriteLine("Give the start-time of excursion:");
-            TimeOnly starttime = AskTimeOfDay();
+            string excursionName = AskString("[deepskyblue1]Give the name of the excursion:[/]");
+            TimeOnly starttime = AskTime("[deepskyblue1]Give the start-time of excursion:[/]");
+            int studentCount = AskInt("[deepskyblue1]Give the ammount of students:[/]");
+            int travelTime = AskInt("[deepskyblue1]How long will the excursion take?:[/]");
 
-            int studentCount = AskInt("Give the ammount of students:");
-
-            int travelTime = AskInt("How long will the excursion take?:");
-
-            _domainManager.CreateNewExcursion(day.Date, travelTime, starttime, excursionName ?? string.Empty, studentCount);
-            Console.WriteLine("Excursion added.");
+            _domainManager.CreateNewExcursion(day.Date, travelTime, starttime, excursionName, studentCount);
+            AnsiConsole.MarkupLine("[blue]Excursion added.[/]");
         }
 
         private void ShowDay()
         {
-            DayDto? day = PickDay();
+            DayDto? day = PickDay("Pick a day to show");
             if (day is null) return;
 
-            Console.WriteLine($"Day {day.Date} ({day.StartTime}-{day.EndTime})");
+            AnsiConsole.Write(
+                new Rule($"[blue]Day {day.Date}  [grey]({day.StartTime}-{day.EndTime})[/][/]")
+                    .RuleStyle(Style.Parse("blue"))
+                    .LeftJustified());
+
             if (day.Activities.Count == 0)
             {
-                Console.WriteLine("(empty)");
+                AnsiConsole.MarkupLine("[grey](empty)[/]");
                 return;
             }
+
             foreach (ActivityDto a in day.Activities)
-                Console.WriteLine(a.Display);
+                AnsiConsole.MarkupLine($"  [deepskyblue1]{Markup.Escape(a.Display)}[/]");
+        }
+
+        private static DateOnly AskDate(string prompt)
+        {
+            string input = AnsiConsole.Prompt(
+                new TextPrompt<string>(prompt)
+                    .Validate(s => DateOnly.TryParse(s, out _)
+                        ? ValidationResult.Success()
+                        : ValidationResult.Error("[red]Invalid date.[/]")));
+            return DateOnly.Parse(input);
+        }
+
+        private static TimeOnly AskTime(string prompt)
+        {
+            string input = AnsiConsole.Prompt(
+                new TextPrompt<string>(prompt)
+                    .Validate(s => TimeOnly.TryParse(s, out _)
+                        ? ValidationResult.Success()
+                        : ValidationResult.Error("[red]Invalid time.[/]")));
+            return TimeOnly.Parse(input);
         }
 
         private static int AskInt(string prompt)
-        {
-            while (true)
-            {
-                Console.WriteLine(prompt);
-                if (int.TryParse(Console.ReadLine(), out int value))
-                    return value;
-                Console.WriteLine("Please enter a valid number.");
-            }
-        }
+            => AnsiConsole.Prompt(
+                new TextPrompt<int>(prompt)
+                    .ValidationErrorMessage("[red]Please enter a valid number.[/]"));
 
-        private TimeOnly AskTimeOfDay()
-        {
-            TimeOnly? time = null;
-            while (time is null)
-            {
-                try
-                {
-                    time = TimeOnly.Parse(Console.ReadLine() ?? string.Empty);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error: {ex.Message}");
-                }
-            }
-            return (TimeOnly)time;
-        }
-
-        private DateOnly AskDate()
-        {
-            DateOnly? date = null;
-            while (date is null)
-            {
-                try
-                {
-                    date = DateOnly.Parse(Console.ReadLine() ?? string.Empty);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error: {ex.Message}");
-                }
-            }
-            return (DateOnly)date;
-        }
+        private static string AskString(string prompt)
+            => AnsiConsole.Prompt(
+                new TextPrompt<string>(prompt)
+                    .Validate(s => !string.IsNullOrWhiteSpace(s)
+                        ? ValidationResult.Success()
+                        : ValidationResult.Error("[red]Value is required.[/]")));
     }
 }
