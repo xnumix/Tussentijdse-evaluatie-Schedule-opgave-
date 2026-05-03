@@ -1,8 +1,8 @@
-﻿namespace Schedule.Domain.Models;
+namespace Schedule.Domain.Exceptions;
 
 public class OutOfScheduleRangeException : Exception
 {
-    public TimeOnly StartTime{ get; }
+    public TimeOnly StartTime { get; }
     public TimeOnly EndTime { get; }
 
     public OutOfScheduleRangeException()

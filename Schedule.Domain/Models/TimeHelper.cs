@@ -29,6 +29,9 @@ namespace Schedule.Domain.Models
         /// <exception cref="InvalidOperationException">Thrown if the new activity overlaps with any activity in the existing activities list.</exception>
         public static void ValidateNoOverlaps(IPlannableActivity newActivity, List<IPlannableActivity> existingActivities)
         {
+            ArgumentNullException.ThrowIfNull(newActivity);
+            ArgumentNullException.ThrowIfNull(existingActivities);
+
             foreach (IPlannableActivity existingActivity in existingActivities)
             {
                 if (newActivity.StartTime < existingActivity.EndTime && existingActivity.StartTime < newActivity.EndTime)

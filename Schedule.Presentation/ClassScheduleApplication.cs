@@ -106,8 +106,7 @@ namespace Schedule.Presentation
             Console.WriteLine("Give the start-time of lesson:");
             TimeOnly starttime = AskTimeOfDay();
 
-            Console.WriteLine("Give the ammount of students:");
-            int studentCount = int.Parse(Console.ReadLine() ?? "0");
+            int studentCount = AskInt("Give the ammount of students:");
 
             _domainManager.CreateNewLesson(day.Date, starttime, lessonName ?? string.Empty, studentCount);
             Console.WriteLine("Lesson added.");
@@ -121,8 +120,7 @@ namespace Schedule.Presentation
             Console.WriteLine("Give the start-time of break:");
             TimeOnly starttime = AskTimeOfDay();
 
-            Console.WriteLine("How many minutes is the break:");
-            int lengthBreak = int.Parse(Console.ReadLine() ?? "0");
+            int lengthBreak = AskInt("How many minutes is the break:");
 
             _domainManager.CreateNewBreak(day.Date, starttime, lengthBreak);
             Console.WriteLine("Break added.");
@@ -139,11 +137,9 @@ namespace Schedule.Presentation
             Console.WriteLine("Give the start-time of excursion:");
             TimeOnly starttime = AskTimeOfDay();
 
-            Console.WriteLine("Give the ammount of students:");
-            int studentCount = int.Parse(Console.ReadLine() ?? "0");
+            int studentCount = AskInt("Give the ammount of students:");
 
-            Console.WriteLine("How long will the excursion take?:");
-            int travelTime = int.Parse(Console.ReadLine() ?? "0");
+            int travelTime = AskInt("How long will the excursion take?:");
 
             _domainManager.CreateNewExcursion(day.Date, travelTime, starttime, excursionName ?? string.Empty, studentCount);
             Console.WriteLine("Excursion added.");
@@ -162,6 +158,17 @@ namespace Schedule.Presentation
             }
             foreach (ActivityDto a in day.Activities)
                 Console.WriteLine(a.Display);
+        }
+
+        private static int AskInt(string prompt)
+        {
+            while (true)
+            {
+                Console.WriteLine(prompt);
+                if (int.TryParse(Console.ReadLine(), out int value))
+                    return value;
+                Console.WriteLine("Please enter a valid number.");
+            }
         }
 
         private TimeOnly AskTimeOfDay()

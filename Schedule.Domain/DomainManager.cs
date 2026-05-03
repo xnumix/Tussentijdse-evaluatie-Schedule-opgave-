@@ -1,4 +1,5 @@
 using Schedule.Domain.DTO;
+using Schedule.Domain.Exceptions;
 using Schedule.Domain.Models;
 using Schedule.Domain.Repository;
 
@@ -11,6 +12,7 @@ namespace Schedule.Domain
 
         public DomainManager(IDayRepository repository)
         {
+            ArgumentNullException.ThrowIfNull(repository);
             _repository = repository;
         }
 
@@ -63,7 +65,7 @@ namespace Schedule.Domain
         {
             Day? day = _repository.GetDay(date);
             if (day is null)
-                throw new InvalidOperationException($"No day exists with date {date}.");
+                throw new DayNotFoundException($"No day exists with date {date}.", date);
             return day;
         }
     }

@@ -1,4 +1,5 @@
 using Microsoft.Data.SqlClient;
+using Schedule.Domain.Exceptions;
 using Schedule.Domain.Models;
 using Schedule.Domain.Repository;
 
@@ -10,6 +11,7 @@ namespace Schedule.Persistance
 
         public DayRepository(string connectionString)
         {
+            ArgumentException.ThrowIfNullOrWhiteSpace(connectionString);
             _connectionString = connectionString;
         }
 
@@ -30,7 +32,7 @@ namespace Schedule.Persistance
             }
             catch (SqlException ex) when (ex.Number == 2627 || ex.Number == 2601)
             {
-                throw new InvalidOperationException($"A day with date {day.Date} already exists.", ex);
+                throw new DuplicateDateException($"A day with date {day.Date} already exists.", day.Date);
             }
         }
 
@@ -92,7 +94,7 @@ namespace Schedule.Persistance
             connection.Open();
 
             int dayId = GetDayId(connection, day.Date)
-                ?? throw new InvalidOperationException($"No day exists with date {day.Date}.");
+                ?? throw new DayNotFoundException($"No day exists with date {day.Date}.", day.Date);
 
             using SqlCommand command = new(
                 @"INSERT INTO Activities (DayId, Type, StartTime, Name, StudentCount, DurationInMinutes, TravelTimeInMinutes)
