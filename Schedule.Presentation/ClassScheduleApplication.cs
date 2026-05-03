@@ -19,35 +19,45 @@ namespace Schedule.Presentation
         {
             while (true)
             {
-                Console.WriteLine("MENU\nPick an option:\n1. Add Lesson\n2. Add Excursion\n3. Add Break\n0. Stop");
 
-                string? inputNummer = Console.ReadLine();
-                try
+                Console.Write("What is the starttime of the day (HH:MM)?: ");
+                TimeOnly dayStartTime = AskTimeOfDay();
+
+                Console.Write("What is the endtime of the day (HH:MM)?: ");
+                TimeOnly dayEndTime = AskTimeOfDay();
+
+                while (true)
                 {
-                    switch (inputNummer)
+                    Console.WriteLine("MENU\nPick an option:\n1. Add Lesson\n2. Add Excursion\n3. Add Break\n0. Stop");
+
+                    string? inputNummer = Console.ReadLine();
+                    try
                     {
-                        case "1":
-                            AddLesson();
-                            ListAllActivities();
-                            break;
-                        case "2":
-                            AddExcursion();
-                            ListAllActivities();
-                            break;
-                        case "3":
-                            AddBreak();
-                            ListAllActivities();
-                            break;
-                        case "0":
-                            return;
-                        default:
-                            Console.WriteLine("Invalid choice.");
-                            break;
+                        switch (inputNummer)
+                        {
+                            case "1":
+                                AddLesson();
+                                ListAllActivities();
+                                break;
+                            case "2":
+                                AddExcursion();
+                                ListAllActivities();
+                                break;
+                            case "3":
+                                AddBreak();
+                                ListAllActivities();
+                                break;
+                            case "0":
+                                return;
+                            default:
+                                Console.WriteLine("Invalid choice.");
+                                break;
+                        }
                     }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error: {ex.Message}");
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error: {ex.Message}");
+                    }
                 }
             }
         }
@@ -106,6 +116,23 @@ namespace Schedule.Presentation
 
             _domainManager.CreateNewExcursion(travelTime, starttime, excursionName, studentCount);
             Console.WriteLine("Excursion added.");
+        }
+
+        private TimeOnly AskTimeOfDay()
+        {
+            TimeOnly? time = null;
+            while (time is null)
+            {
+                try
+                {
+                    time = TimeOnly.Parse(Console.ReadLine());                
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error: {ex.Message}");
+                }
+            }
+            return (TimeOnly)time;
         }
     }
 }
