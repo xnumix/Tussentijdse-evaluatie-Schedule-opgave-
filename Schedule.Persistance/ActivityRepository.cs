@@ -8,5 +8,7 @@ namespace Schedule.Persistance
         private readonly List<Activity> _activities = [];
 
         public void StoreActivity(Activity activity) => _activities.Add(activity);
+
+        public IReadOnlyList<Activity> GetActivities() => _activities.AsReadOnly();
     }
 }

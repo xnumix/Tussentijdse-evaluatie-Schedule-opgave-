@@ -1,5 +1,5 @@
 ﻿using Schedule.Domain;
-using System.Xml.Linq;
+using Schedule.Domain.Models;
 
 namespace Schedule.Presentation
 {
@@ -18,8 +18,8 @@ namespace Schedule.Presentation
         {
             while (true)
             {
-                Console.WriteLine("MENU\nPick an option:\n1. Add Lesson\n2. Add Excursion\n3. Add Break \n0. Stop");
-                
+                Console.WriteLine("MENU\nPick an option:\n1. Add Lesson\n2. Add Excursion\n3. Add Break\n0. Stop");
+
                 string? inputNummer = Console.ReadLine();
                 try
                 {
@@ -27,12 +27,15 @@ namespace Schedule.Presentation
                     {
                         case "1":
                             AddLesson();
+                            ListAllActivities();
                             break;
                         case "2":
                             AddExcursion();
+                            ListAllActivities();
                             break;
                         case "3":
                             AddBreak();
+                            ListAllActivities();
                             break;
                         case "0":
                             return;
@@ -41,11 +44,22 @@ namespace Schedule.Presentation
                             break;
                     }
                 }
-                catch (Exception ex) 
+                catch (Exception ex)
                 {
                     Console.WriteLine($"Error: {ex.Message}");
                 }
             }
+        }
+
+        private void ListAllActivities()
+        {
+            IReadOnlyList<Activity> all = _domainManager.ListActivities();
+            if (all.Count == 0) { Console.WriteLine("(empty)"); return; }
+
+            // POLYMORFISME in actie: elk Activity roept zijn eigen ToString aan,
+            // de presentation-laag weet niet of het een lesson, break of excursion is.
+            foreach (Activity a in all)
+                Console.WriteLine(a);
         }
 
         private void AddLesson()
@@ -60,7 +74,7 @@ namespace Schedule.Presentation
             int studentCount = int.Parse(Console.ReadLine());
 
             _domainManager.CreateNewLesson(starttime, lessonName, studentCount);
-            Console.WriteLine("Added.");
+            Console.WriteLine("Lesson added.");
         }
 
         private void AddBreak()
@@ -72,6 +86,7 @@ namespace Schedule.Presentation
             int lengthBreak = int.Parse(Console.ReadLine());
 
             _domainManager.CreateNewBreak(starttime, lengthBreak);
+            Console.WriteLine("Break added.");
         }
 
         private void AddExcursion()
@@ -89,6 +104,7 @@ namespace Schedule.Presentation
             int travelTime = int.Parse(Console.ReadLine());
 
             _domainManager.CreateNewExcursion(travelTime, starttime, excursionName, studentCount);
+            Console.WriteLine("Excursion added.");
         }
     }
 }
